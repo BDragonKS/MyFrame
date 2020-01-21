@@ -95,7 +95,7 @@ public class AesUtil {
                 byte[] byteContent = parseHexStr2Byte(content);
                 return new String(cipher.doFinal(byteContent));
             }
-        } catch (NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchProviderException | InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchProviderException e) {
             e.printStackTrace();
         }
         return null;
@@ -122,7 +122,7 @@ public class AesUtil {
      * @param password 密钥
      * @return 返回SecretKeySpec类
      */
-    private SecretKeySpec deriveKeyInsecurely(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    /*private SecretKeySpec deriveKeyInsecurely(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         // 盐值的字节数组长度，注意这里是字节数组的长度
         // 其长度值需要和最终输出的密钥字节数组长度一致
@@ -154,12 +154,12 @@ public class AesUtil {
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
         return new SecretKeySpec(keyBytes, "AES");
-    }
-
-    /*private static SecretKeySpec deriveKeyInsecurely(String password) {
-        byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
-        return new SecretKeySpec(InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(passwordBytes, keySize), "AES");
     }*/
+
+    private  SecretKeySpec deriveKeyInsecurely(String password) {
+        byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
+        return new SecretKeySpec(InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(passwordBytes, keyLength), "AES");
+    }
 
     private static String parseByte2HexStr(byte[] buf) {
         StringBuilder sb = new StringBuilder();
